@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中医体质分类与判定测评表 · 数字化记录版（GB/T 46939—2025）</title>
+<style>
+  :root{
+    --primary:#2e7d5b; --primary-dark:#1f5c42; --primary-light:#e7f2ec;
+    --accent:#c0563a; --gold:#c9a227; --gold-light:#fdf6e7; --gold-line:#f0dcae;
+    --bg:#f4f6f4; --card:#ffffff; --line:#e3e8e5; --text:#2b3330; --muted:#6b7a72;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6; padding:16px 16px 48px;
+  }
+  .wrap{max-width:820px; margin:0 auto;}
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff; border-radius:var(--radius); padding:22px 20px; margin-bottom:14px;
+  }
+  header h1{font-size:1.32rem; margin-bottom:6px; letter-spacing:.5px;}
+  header p{font-size:.85rem; opacity:.92;}
+  .banner{
+    background:var(--gold-light); border:1px solid var(--gold-line); border-radius:var(--radius);
+    padding:12px 16px; font-size:.82rem; color:#8a6d2f; margin-bottom:14px;
+  }
+  .banner b{color:#7a5b1d;}
+  .card{
+    background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
+    padding:18px; margin-bottom:14px;
+  }
+  .card h2{
+    font-size:1.05rem; color:var(--primary-dark); margin-bottom:10px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  }
+  .badge{
+    display:inline-block; background:var(--primary-light); color:var(--primary-dark);
+    font-size:.72rem; padding:2px 8px; border-radius:999px; font-weight:normal;
+  }
+  .hint{font-size:.82rem; color:var(--muted); margin-bottom:12px;}
+  .step{
+    background:var(--primary); color:#fff; width:24px; height:24px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center; font-size:.82rem; flex:none;
+  }
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .form-item{display:flex; flex-direction:column; gap:4px;}
+  .form-item.full{grid-column:1 / -1;}
+  .form-item label{font-size:.85rem; font-weight:600;}
+  .req{color:var(--accent);}
+  .form-item input[type=text], .form-item input[type=tel], .form-item input[type=date], .form-item select{
+    padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; font-size:.95rem;
+    background:#fff; color:var(--text); width:100%; font-family:inherit;
+    transition:border-color .15s, background .15s;
+  }
+  .form-item input:focus, .form-item select:focus{outline:none; border-color:var(--primary);}
+  /* 实时错误样式 */
+  .form-item input.error, .form-item select.error{
+    border-color:var(--accent) !important;
+    background:#fdf6f3 !important;
+    box-shadow:0 0 0 3px rgba(192,86,58,.12) !important;
+  }
+  .field-err{
+    font-size:.78rem; color:var(--accent); margin-top:3px;
+    display:none; line-height:1.4;
+  }
+  .field-err.show{display:block;}
+  .field-err::before{content:"⚠ "; font-weight:700;}
+  .seg{display:flex; gap:8px;}
+  .seg label{
+    flex:1; text-align:center; padding:10px; border:2px solid var(--line);
+    border-radius:9px; cursor:pointer; font-size:.95rem; background:#fff; user-select:none;
+  }
+  .seg input{display:none;}
+  .seg label:has(input:checked){border-color:var(--primary); background:var(--primary-light); font-weight:bold; color:var(--primary-dark);}
+  .stage-group{display:flex; flex-wrap:wrap; gap:8px;}
+  .stage{
+    border:1.5px solid var(--line); border-radius:20px; padding:7px 15px;
+    font-size:.9rem; cursor:pointer; user-select:none; color:var(--muted);
+    transition:all .15s; background:#fff;
+  }
+  .stage:hover{border-color:var(--primary); color:var(--primary);}
+  .stage.on{border-color:var(--primary); background:var(--primary-light); color:var(--primary); font-weight:700;}
+  .stage .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--primary); margin-left:5px; vertical-align:middle;}
+  .stage-meta{margin-top:10px; font-size:.85rem; color:var(--muted);}
+  .q{border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:12px;}
+  .q.done{background:#f6faf8;}
+  .q.miss-q{border-color:var(--accent); background:#fdf6f3;}
+  .q .qt{font-size:.95rem; font-weight:600; margin-bottom:10px;}
+  .q .qt .rev{color:var(--accent);}
+  .scale{display:flex; gap:6px;}
+  .scale label{
+    flex:1; border:1.5px solid var(--line); border-radius:9px; font-size:.8rem;
+    padding:9px 2px; text-align:center; cursor:pointer; color:var(--muted);
+    background:#fff; user-select:none; transition:all .15s;
+  }
+  .scale label:hover{border-color:var(--primary);}
+  .scale input{position:absolute; opacity:0; pointer-events:none;}
+  .scale label:has(input:checked){background:var(--primary); color:#fff; border-color:var(--primary); font-weight:bold;}
+  .gender-box{
+    background:#fdf6f3; border:1px dashed #e0b8a8; border-radius:12px;
+    padding:12px; margin-bottom:12px; font-size:.85rem; color:var(--accent);
+  }
+  .progress{
+    position:sticky; top:0; z-index:10; background:#fff; border:1px solid var(--line);
+    border-radius:12px; padding:10px 16px; margin-bottom:14px; font-size:.85rem;
+    color:var(--muted); display:flex; align-items:center; gap:12px;
+    box-shadow:0 2px 8px rgba(45,58,63,.05);
+  }
+  .progress .pbar{flex:1; height:8px; background:#eef1ef; border-radius:99px; overflow:hidden;}
+  .progress .pbar i{display:block; height:100%; background:var(--primary); width:0; transition:width .3s;}
+  .actions{display:flex; gap:12px; flex-wrap:wrap;}
+  button.big{
+    flex:1; min-width:140px; padding:14px; border:none; border-radius:10px;
+    font-size:1rem; cursor:pointer; font-weight:600; font-family:inherit;
+  }
+  .btn-calc{background:var(--primary); color:#fff;}
+  .btn-calc:hover{background:var(--primary-dark);}
+  .btn-reset{background:#eef1ef; color:var(--text);}
+  .btn-ghost{
+    flex:none; padding:11px 20px; border:1.5px solid var(--line); background:#fff;
+    color:var(--muted); border-radius:10px; font-size:.92rem; cursor:pointer; font-weight:600; font-family:inherit;
+  }
+  .btn-danger{
+    flex:none; padding:11px 20px; border:1.5px solid #e8c4ba; background:#fff;
+    color:var(--accent); border-radius:10px; font-size:.92rem; cursor:pointer; font-weight:600; font-family:inherit;
+  }
+  .btn-submit{
+    flex:none; padding:11px 22px; border:none; background:var(--primary);
+    color:#fff; border-radius:10px; font-size:.92rem; cursor:pointer; font-weight:600; font-family:inherit;
+  }
+  .btn-submit:hover{background:var(--primary-dark);}
+  .btn-submit:disabled{background:#b6c3ba; cursor:progress;}
+  .admin-wrap{margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);}
+  .admin-scroll{max-height:460px; overflow:auto; margin-top:12px;}
+  .admin-scroll table{font-size:.82rem;}
+  #result{display:none;}
+  .info-line{font-size:.85rem; color:var(--muted); margin-bottom:12px;
+    background:#f6f8f7; border-radius:8px; padding:9px 11px; line-height:1.75;}
+  .res-table{width:100%; border-collapse:collapse; font-size:.9rem;}
+  .res-table th,.res-table td{border:1px solid var(--line); padding:8px 6px; text-align:center;}
+  .res-table th{background:#f0f5f2;}
+  .res-table td:first-child{text-align:left; font-weight:600;}
+  .bar{height:8px; background:#eef1ef; border-radius:99px; overflow:hidden; min-width:70px;}
+  .bar i{display:block; height:100%; background:var(--primary);}
+  .tag-yes{background:#fde8e3; color:var(--accent); font-weight:bold; padding:1px 8px; border-radius:99px; font-size:.78rem;}
+  .tag-tend{background:#fdf3d8; color:#9a7b12; font-weight:bold; padding:1px 8px; border-radius:99px; font-size:.78rem;}
+  .tag-no{color:var(--muted);}
+  .summary{
+    margin-top:14px; padding:14px; border-radius:10px; background:var(--primary-light);
+    border-left:4px solid var(--primary); font-size:.92rem;
+  }
+  .err{color:var(--accent); font-size:.88rem; margin-top:8px; display:none;
+    background:#fdf6f3; padding:9px 12px; border-radius:8px; border-left:4px solid var(--accent);}
+  details.detail{margin-top:12px; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+  details.detail>summary{
+    cursor:pointer; padding:11px 14px; font-size:.9rem; font-weight:600; color:var(--primary-dark);
+    background:#f6faf8; list-style:none; display:flex; align-items:center; gap:8px;
+  }
+  details.detail>summary::-webkit-details-marker{display:none;}
+  details.detail>summary::before{content:"▸"; color:var(--primary); transition:transform .15s;}
+  details.detail[open]>summary::before{transform:rotate(90deg);}
+  .item-table{width:100%; border-collapse:collapse; font-size:.85rem;}
+  .item-table th,.item-table td{border-top:1px solid var(--line); padding:7px 10px; text-align:left;}
+  .item-table th{background:#fafcfb; color:var(--muted); font-weight:600; font-size:.8rem;}
+  .item-table tr.grp td{background:var(--primary-light); color:var(--primary-dark); font-weight:700; font-size:.85rem;}
+  .item-table td.num{text-align:center; width:64px;}
+  .rev-tag{color:var(--accent); font-size:.75rem;}
+  .chart-box{overflow-x:auto;}
+  .chart-box svg{display:block;}
+  .chart-tabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .ctab{
+    border:1.5px solid var(--line); border-radius:999px; padding:5px 13px; font-size:.8rem;
+    cursor:pointer; color:var(--muted); background:#fff; user-select:none; transition:all .15s;
+  }
+  .ctab.on{background:var(--primary); border-color:var(--primary); color:#fff; font-weight:600;}
+  .legend{font-size:.78rem; color:var(--muted); margin-top:10px; line-height:1.7;}
+  .empty-tip{color:var(--muted); font-size:.85rem; text-align:center; padding:16px 8px; line-height:1.8;}
+  table.records{width:100%; border-collapse:collapse; font-size:.85rem;}
+  table.records th,table.records td{padding:9px 8px; text-align:center; border-bottom:1px solid var(--line);}
+  table.records th{color:var(--muted); font-weight:600; font-size:.78rem; background:#fafcfb;}
+  table.records td.left{text-align:left;}
+  .del-btn{border:none; background:none; color:var(--accent); cursor:pointer; font-size:.8rem; text-decoration:underline; font-family:inherit;}
+  .link-btn{border:none; background:none; color:var(--primary); cursor:pointer; font-size:.8rem; text-decoration:underline; font-family:inherit;}
+  .export-area{
+    width:100%; height:150px; border:1.5px solid var(--line); border-radius:10px;
+    padding:10px; font-size:.78rem; color:var(--text); margin-top:12px; display:none; font-family:inherit;
+  }
+  footer{font-size:.75rem; color:var(--muted); text-align:center; margin:20px 0; line-height:1.9;}
+  .toast{
+    position:fixed; left:50%; bottom:34px; transform:translateX(-50%) translateY(20px);
+    background:rgba(45,58,63,.93); color:#fff; padding:10px 22px; border-radius:24px;
+    font-size:.88rem; opacity:0; pointer-events:none; transition:all .3s; z-index:99;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .modal-bg{
+    position:fixed; inset:0; background:rgba(35,45,42,.45); z-index:80; display:none;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-bg.show{display:flex;}
+  .modal{
+    background:#fff; border-radius:var(--radius); padding:20px; max-width:820px; width:100%;
+    max-height:85vh; overflow:auto;
+  }
+  .modal h3{color:var(--primary-dark); margin-bottom:12px; font-size:1.05rem;}
+  @media (max-width:560px){ .form-grid{grid-template-columns:1fr;} body{padding:10px 10px 40px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>中医体质分类与判定测评表 · 数字化记录版</h1>
+  <p>依据 GB/T 46939—2025《中医体质分类与判定》附录A · 请根据近一年的体验和感觉作答</p>
+</header>
+
+<div class="banner">
+  <b>合规提示：</b>本工具记录您的<b>主观体质感受</b>，测评结果不构成疾病诊断、治疗依据。数据仅保存在<b>本机浏览器</b>中，不上传服务器，您可以随时导出或删除。
+</div>
+
+<!-- ============ ① 基本信息 ============ -->
+<div class="card" id="infoCard">
+  <h2><span class="step">1</span>基本信息</h2>
+  <div class="form-grid">
+    <div class="form-item">
+      <label>姓名 <span class="req">*</span></label>
+      <input type="text" id="fName" placeholder="请输入姓名" autocomplete="name">
+      <div class="field-err" id="fNameErr"></div>
+    </div>
+    <div class="form-item">
+      <label>性别 <span class="req">*</span></label>
+      <div class="seg">
+        <label><input type="radio" name="gender" value="male"><span>男</span></label>
+        <label><input type="radio" name="gender" value="female"><span>女</span></label>
+      </div>
+      <div class="field-err" id="fGenderErr"></div>
+    </div>
+    <div class="form-item">
+      <label>出生年月 <span class="req">*</span></label>
+      <input type="date" id="fBirth" min="1900-01-01">
+      <div class="field-err" id="fBirthErr"></div>
+    </div>
+    <div class="form-item">
+      <label>联系电话 <span class="req">*</span></label>
+      <input type="tel" id="fPhone" placeholder="请输入手机号码" maxlength="11" inputmode="numeric" autocomplete="tel">
+      <div class="field-err" id="fPhoneErr"></div>
+      <div style="margin-top:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button type="button" class="btn-ghost" id="loadMyBtn" style="flex:none; padding:7px 14px; font-size:.85rem;">📂 加载我的记录</button>
+        <span id="loadStatus" style="font-size:.8rem; color:var(--muted);">输入手机号后可加载该号码的历史记录</span>
+      </div>
+    </div>
+    <div class="form-item full">
+      <label>所在位置 <span class="req">*</span></label>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <button type="button" id="locBtn" onclick="getLocation()"
+          style="padding:10px 18px; border:2px solid var(--primary); border-radius:9px; background:var(--primary-light); color:var(--primary-dark); font-size:.92rem; font-weight:600; cursor:pointer; white-space:nowrap; font-family:inherit;">📍 自动定位</button>
+        <span id="locStatus" style="font-size:.85rem; color:var(--muted);">点击按钮获取您当前所在城市</span>
+      </div>
+      <input type="hidden" id="fCity" value="">
+      <div id="locFallback" style="display:none; margin-top:10px;">
+        <select id="fCityManual" class="error-target">
+          <option value="">定位失败？请手动选择城市</option>
+        </select>
+      </div>
+      <div class="field-err" id="fCityErr"></div>
+    </div>
+    <div class="form-item">
+      <label>推荐渠道 <span class="req">*</span></label>
+      <input type="text" id="fChannel" placeholder="如：推荐人、推荐公司或推荐门店">
+      <div class="field-err" id="fChannelErr"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ② 评估阶段与时间 ============ -->
+<div class="card" id="stageCard">
+  <h2><span class="step">2</span>评估阶段与时间 <span class="badge">试食进度</span></h2>
+  <p class="hint">同一受测者可在不同时间点重复测评。请先选择本次测评处于「试食前」还是「试食后」；选择「试食后」时系统会自动计算与首次记录的自然日间隔。<span style="color:var(--primary)">●</span> 标记表示已保存该阶段记录。</p>
+  <div class="stage-group" id="stageGroup"></div>
+
+  <div id="cycleBox" style="margin-top:14px; padding:12px 14px; background:#f6faf8; border:1px dashed var(--primary); border-radius:10px; display:none;">
+    <label style="font-size:.85rem; font-weight:600; display:block; margin-bottom:6px;">试食周期 <span class="req">*</span> <span style="font-weight:400; font-size:.78rem; color:var(--muted)">（可手动修改）</span></label>
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <input type="number" id="fCycle" min="0.5" step="0.5" placeholder="如 2"
+        style="width:110px; padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; font-size:.95rem; background:#fff; color:var(--text); font-family:inherit;">
+      <select id="fCycleUnit"
+        style="width:96px; padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; font-size:.95rem; background:#fff; color:var(--text); font-family:inherit;">
+        <option value="周" selected>周</option>
+        <option value="天">天</option>
+        <option value="月">月</option>
+      </select>
+      <span style="font-size:.8rem; color:var(--muted);">已试食时长，如 2 周 / 15 天 / 1 个月</span>
+    </div>
+    <div class="field-err" id="cycleErr"></div>
+  </div>
+
+  <div style="margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);">
+    <label style="font-size:.85rem; font-weight:600; display:block; margin-bottom:6px;">评估时间 <span class="req">*</span></label>
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <input type="datetime-local" id="fAssessTime" step="60"
+        style="padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; font-size:.95rem; background:#fff; color:var(--text); font-family:inherit; flex:1; min-width:220px;">
+      <button type="button" class="btn-ghost" id="netTimeBtn" style="flex:none;">🌐 获取网络时间</button>
+    </div>
+    <div id="timeStatus" style="font-size:.8rem; color:var(--muted); margin-top:7px;">正在自动获取网络时间…</div>
+    <div class="field-err" id="fAssessTimeErr"></div>
+  </div>
+
+  <div class="stage-meta" id="stageMeta"></div>
+</div>
+
+<!-- ============ ③ 测评 ============ -->
+<div class="progress">
+  <span id="pcount">已答 0 / 29</span>
+  <div class="pbar"><i id="pfill"></i></div>
+</div>
+<div id="questions"></div>
+<div class="card">
+  <div class="actions">
+    <button class="big btn-calc" onclick="calc()">计算并保存本次结果</button>
+    <button class="big btn-reset" onclick="resetAll()">重置</button>
+  </div>
+  <p class="err" id="err"></p>
+</div>
+
+<!-- ============ ④ 判定结果 ============ -->
+<div id="result">
+  <div class="card">
+    <h2><span class="step">4</span>判定结果</h2>
+    <div class="info-line" id="resInfo"></div>
+    <table class="res-table" id="resTable"></table>
+    <div class="summary" id="summary"></div>
+
+    <details class="detail" id="itemDetail">
+      <summary>各题目得分明细（点击展开/收起）</summary>
+      <div id="itemTableBox"></div>
+    </details>
+
+    <div style="margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);">
+      <label style="font-size:.85rem; font-weight:600; display:block; margin-bottom:6px;">提交本次测评结果</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <button class="btn-submit" id="submitBtn" style="flex:none;">🚀 提交结果</button>
+        <button class="btn-ghost" id="copyBtn" style="flex:none;">📋 复制结果</button>
+      </div>
+      <div id="submitStatus" style="font-size:.8rem; color:var(--muted); margin-top:7px;">
+        「提交结果」会把本次测评直接上传到后台，在微信里打开也能用。提交后会给出一个受理编号，请截图保存。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ⑤ 各指标趋势图 ============ -->
+<div class="card">
+  <h2><span class="step">5</span>各指标趋势图 <span id="chartTitleInfo" style="font-size:.78rem; color:var(--muted); font-weight:400;"></span></h2>
+  <div class="chart-tabs" id="chartTabs"></div>
+  <div class="chart-box" id="chartBox"></div>
+  <div class="legend" id="chartLegend">
+    纵轴为该指标的转化分（0–100），横轴为「试食前 → 试食后（按周期由短到长）」。虚线为试食前参考线。<br>
+    趋势仅反映您的自评记录变化，不代表健康状况结论或产品功效评价，也不构成医疗诊断。
+  </div>
+</div>
+
+<!-- ============ ⑥ 历史记录 ============ -->
+<div class="card">
+  <h2><span class="step">6</span>历史记录（本机保存） <span id="recordsTitleInfo" style="font-size:.78rem; color:var(--muted); font-weight:400;"></span></h2>
+  <div id="recordsBox"></div>
+  <div class="actions" style="margin-top:14px;">
+    <button class="btn-ghost" id="exportBtn">导出记录文本</button>
+    <button class="btn-ghost" id="csvBtn">导出 CSV</button>
+    <button class="btn-danger" id="clearBtn">清空全部数据</button>
+  </div>
+  <textarea class="export-area" id="exportArea" readonly></textarea>
+</div>
+
+<!-- ============ ⑦ 已提交记录查询 ============ -->
+<div class="card" id="adminCard" style="display:none;">
+  <h2><span class="step">7</span>已提交记录查询（管理入口）
+    <button class="link-btn" id="adminExitBtn" style="float:right; font-size:.78rem; font-weight:400;">退出管理视图</button>
+  </h2>
+  <div class="admin-wrap">
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <input type="password" id="adminPwd" placeholder="请输入管理口令"
+        style="flex:1; min-width:180px; padding:10px 12px; border:1.5px solid var(--line); border-radius:9px; font-size:.92rem; background:#fff; color:var(--text); font-family:inherit;">
+      <button class="btn-ghost" id="adminBtn" style="flex:none;">查询提交记录</button>
+      <button class="btn-ghost" id="adminCsvBtn" style="flex:none;">导出 CSV</button>
+    </div>
+    <div id="adminStatus" style="font-size:.8rem; color:var(--muted); margin-top:7px;">
+      客户提交的结果会保存在后台，输入管理口令后可查看并导出。
+    </div>
+    <div class="admin-scroll" id="adminTableBox"></div>
+    <div style="font-size:.76rem; color:var(--muted); margin-top:10px;">
+      此卡片仅你可见。用「管理链接」打开、或在本页底部连点 5 次可再次唤出。
+    </div>
+  </div>
+</div>
+
+<footer id="footerTap">
+  原始分 = 各条目分值相加；转化分 = [(原始分 − 条目数) ÷ (条目数 × 4)] × 100<br>
+  平和质标 * 条目需逆向计分（1→5，2→4，3→3，4→2，5→1）<br>
+  判定标准：平和质 转化分≥60 且 其他 8 种偏颇体质转化分<b>均&lt;30</b> → 是；均&lt;40 → 基本是；否则 → 否。
+  偏颇体质 转化分≥40 → 是；30~39 → 倾向是；&lt;30 → 否。<br>
+  本工具仅供自测参考，不构成医疗诊断<br>
+  测评过程与历史记录保存在本机浏览器（localStorage）；只有点击「提交结果」时，本条结果才会上传到后台。导出、删除等操作由您自主控制。
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle">记录详情</h3>
+    <div id="modalBody"></div>
+    <div class="actions" style="margin-top:16px;">
+      <button class="btn-ghost" onclick="document.getElementById('modalBg').classList.remove('show')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   常量与数据
+   ============================================================ */
+const LIKERT = ["没有","很少","有时","经常","总是"];
+const STAGES = ["试食前","试食后"];
+const UNIT_DAYS = {"天":1, "周":7, "月":30};
+const STORE_KEY = "tizhi_scale_records_v4";
+
+const DATA = [
+ {name:"平和质", normal:true, note:"标 * 条目需逆向计分", items:[
+   {q:"您精力充沛吗？"},
+   {q:"您容易疲乏吗？", rev:true},
+   {q:"您感到闷闷不乐、情绪低沉吗？", rev:true},
+   {q:"您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空调、电扇等）吗？", rev:true}
+ ]},
+ {name:"气虚质", items:[
+   {q:"您容易疲乏吗？"},
+   {q:"您容易气短（呼吸短促，接不上气）吗？"},
+   {q:"您容易心慌吗？"}
+ ]},
+ {name:"阳虚质", items:[
+   {q:"您胃脘部、背部或腰膝部怕冷吗？"},
+   {q:"您感到怕冷、衣服比别人穿得多吗？"},
+   {q:"您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空调、电扇等）吗？"}
+ ]},
+ {name:"阴虚质", items:[
+   {q:"您感觉身体、脸上发热吗？"},
+   {q:"您皮肤或口唇干吗？"},
+   {q:"您面部两颧潮红或偏红吗？"}
+ ]},
+ {name:"痰湿质", items:[
+   {q:"您感到身体沉重不轻松或不爽快吗？"},
+   {q:"您腹部肥满松软吗？"},
+   {q:"您嘴里有黏黏的感觉吗？"}
+ ]},
+ {name:"湿热质", genderPick:true, items:[
+   {q:"您面部或鼻部有油腻感或者油亮发光吗？"},
+   {q:"您小便时尿道有发热感、尿色浓（深）吗？"},
+   {q:"您带下色黄（白带颜色发黄）吗？", gender:"female", label:"限女性回答"},
+   {q:"您的阴囊部位潮湿吗？", gender:"male", label:"限男性回答"}
+ ]},
+ {name:"血瘀质", items:[
+   {q:"您身体上有哪里疼痛吗？"},
+   {q:"您面色晦暗或容易出现褐斑吗？"},
+   {q:"您口唇颜色偏暗吗？"}
+ ]},
+ {name:"气郁质", items:[
+   {q:"您感到闷闷不乐、情绪低沉吗？"},
+   {q:"您容易精神紧张、焦虑不安吗？"},
+   {q:"您多愁善感、感情脆弱吗？"}
+ ]},
+ {name:"特禀质", items:[
+   {q:"您没有感冒时也会打喷嚏吗？"},
+   {q:"您容易过敏（对药物、食物、气味、花粉或在季节交替、气候变化时）吗？"},
+   {q:"您的皮肤容易起荨麻疹（风团、风疹块、风疙瘩）吗？"},
+   {q:"您的皮肤一抓就红，并出现抓痕吗？"}
+ ]}
+];
+const METRICS = DATA.map((c,i)=>({key:"c"+i, name:c.name, normal:!!c.normal}));
+METRICS.push({key:"avg", name:"总体均分", avg:true});
+
+const CITIES = {
+  "直辖市":["北京市","天津市","上海市","重庆市"],
+  "河北":["石家庄市","唐山市","保定市","廊坊市","沧州市","邯郸市","秦皇岛市","张家口市","承德市","衡水市","邢台市"],
+  "山西":["太原市","大同市","阳泉市","长治市","晋城市","朔州市","忻州市","吕梁市","晋中市","临汾市","运城市"],
+  "内蒙古":["呼和浩特市","包头市","乌海市","赤峰市","通辽市","鄂尔多斯市","呼伦贝尔市","巴彦淖尔市","乌兰察布市"],
+  "辽宁":["沈阳市","大连市","鞍山市","抚顺市","本溪市","丹东市","锦州市","营口市","阜新市","辽阳市","盘锦市","铁岭市","朝阳市","葫芦岛市"],
+  "吉林":["长春市","吉林市","四平市","辽源市","通化市","白山市","松原市","白城市","延边州"],
+  "黑龙江":["哈尔滨市","齐齐哈尔市","鸡西市","鹤岗市","双鸭山市","大庆市","伊春市","佳木斯市","七台河市","牡丹江市","黑河市","绥化市"],
+  "江苏":["南京市","无锡市","徐州市","常州市","苏州市","南通市","连云港市","淮安市","盐城市","扬州市","镇江市","泰州市","宿迁市"],
+  "浙江":["杭州市","宁波市","温州市","嘉兴市","湖州市","绍兴市","金华市","衢州市","舟山市","台州市","丽水市"],
+  "安徽":["合肥市","芜湖市","蚌埠市","淮南市","马鞍山市","淮北市","铜陵市","安庆市","黄山市","滁州市","阜阳市","宿州市","六安市","亳州市","池州市","宣城市"],
+  "福建":["福州市","厦门市","莆田市","三明市","泉州市","漳州市","南平市","龙岩市","宁德市"],
+  "江西":["南昌市","景德镇市","萍乡市","九江市","新余市","鹰潭市","赣州市","吉安市","宜春市","抚州市","上饶市"],
+  "山东":["济南市","青岛市","淄博市","枣庄市","东营市","烟台市","潍坊市","济宁市","泰安市","威海市","日照市","临沂市","德州市","聊城市","滨州市","菏泽市"],
+  "河南":["郑州市","开封市","洛阳市","平顶山市","安阳市","鹤壁市","新乡市","焦作市","濮阳市","许昌市","漯河市","三门峡市","南阳市","商丘市","信阳市","周口市","驻马店市"],
+  "湖北":["武汉市","黄石市","十堰市","宜昌市","襄阳市","鄂州市","荆门市","孝感市","荆州市","黄冈市","咸宁市","随州市","恩施州","仙桃市","潜江市","天门市"],
+  "湖南":["长沙市","株洲市","湘潭市","衡阳市","邵阳市","岳阳市","常德市","张家界市","益阳市","郴州市","永州市","怀化市","娄底市","湘西州"],
+  "广东":["广州市","深圳市","珠海市","汕头市","佛山市","韶关市","湛江市","肇庆市","江门市","茂名市","惠州市","梅州市","汕尾市","河源市","阳江市","清远市","东莞市","中山市","潮州市","揭阳市","云浮市"],
+  "广西":["南宁市","柳州市","桂林市","梧州市","北海市","防城港市","钦州市","贵港市","玉林市","百色市","贺州市","河池市","来宾市","崇左市"],
+  "海南":["海口市","三亚市","三沙市","儋州市"],
+  "四川":["成都市","自贡市","攀枝花市","泸州市","德阳市","绵阳市","广元市","遂宁市","内江市","乐山市","南充市","眉山市","宜宾市","广安市","达州市","雅安市","巴中市","资阳市"],
+  "贵州":["贵阳市","六盘水市","遵义市","安顺市","毕节市","铜仁市","黔西南州","黔东南州","黔南州"],
+  "云南":["昆明市","曲靖市","玉溪市","保山市","昭通市","丽江市","普洱市","临沧市","楚雄州","红河州","文山州","西双版纳州","大理州","德宏州","怒江州","迪庆州"],
+  "西藏":["拉萨市","日喀则市","昌都市","林芝市","山南市","那曲市","阿里地区"],
+  "陕西":["西安市","铜川市","宝鸡市","咸阳市","渭南市","延安市","汉中市","榆林市","安康市","商洛市"],
+  "甘肃":["兰州市","嘉峪关市","金昌市","白银市","天水市","武威市","张掖市","平凉市","酒泉市","庆阳市","定西市","陇南市","临夏州","甘南州"],
+  "青海":["西宁市","海东市","海北州","黄南州","海南州","果洛州","玉树州","海西州"],
+  "宁夏":["银川市","石嘴山市","吴忠市","固原市","中卫市"],
+  "新疆":["乌鲁木齐市","克拉玛依市","吐鲁番市","哈密市","昌吉州","博尔塔拉州","巴音郭楞州","阿克苏地区","克孜勒苏州","喀什地区","和田地区","伊犁州","塔城地区","阿勒泰地区"],
+  "中国香港":["香港"],"中国澳门":["澳门"],"中国台湾":["台北市","新北市","台中市","高雄市","台南市"]
+};
+
+/* ============================================================
+   工具函数
+   ============================================================ */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+let toastTimer = null;
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.className = "toast show";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.className = "toast"; }, 2200);
+}
+function fmtDate(iso){
+  if(!iso) return "";
+  const p = String(iso).split("-");
+  return p.length === 3 ? (parseInt(p[0],10)) + "." + parseInt(p[1],10) + "." + parseInt(p[2],10) : iso;
+}
+function pad2(n){ return String(n).padStart(2,"0"); }
+function toLocalInput(d){
+  return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate()) +
+    "T" + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+}
+function nowLocalInput(){ return toLocalInput(new Date()); }
+function parseLocalDT(s){
+  if(!s) return 0;
+  const t = new Date(String(s).replace(" ", "T")).getTime();
+  return isNaN(t) ? 0 : t;
+}
+function todayISO(){ return toLocalInput(new Date()).slice(0,10); }
+function fmtDateTime(iso){
+  if(!iso) return "—";
+  const s = String(iso).replace(" ", "T");
+  if(s.indexOf("T") === -1) return fmtDate(s);
+  const datePart = fmtDate(s.slice(0,10));
+  const timePart = s.slice(11,16);
+  return datePart + " " + timePart;
+}
+function stageText(s){
+  if(s === "试食后") return "试食后";
+  if(s === "试食前") return "试食前";
+  if(s === "基线") return "试食前";
+  return s || "试食前";
+}
+function stageLabel(rec){
+  if(!rec) return "—";
+  const s = rec.stage === "试食后" ? "试食后" : "试食前";
+  if(s === "试食后"){
+    const n = parseFloat(rec.cycle);
+    if(n && !isNaN(n)) return "试食后 · " + n + (rec.cycleUnit || "周");
+    return "试食后";
+  }
+  return "试食前";
+}
+function cycleDays(rec){
+  if(!rec || rec.stage !== "试食后") return -1;
+  const n = parseFloat(rec.cycle);
+  if(!n || isNaN(n)) return 0;
+  return n * (UNIT_DAYS[rec.cycleUnit] || 1);
+}
+function sortRecords(arr){
+  return arr.slice().sort((a,b)=>{
+    const ad = cycleDays(a), bd = cycleDays(b);
+    if(ad !== bd) return ad - bd;
+    const at = parseLocalDT(a.date) || a.ts || 0;
+    const bt = parseLocalDT(b.date) || b.ts || 0;
+    return at !== bt ? at - bt : (a.ts - b.ts);
+  });
+}
+function dateOnlyTs(ts){
+  const d = new Date(ts);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+}
+function dateDiffDays(tsA, tsB){
+  if(!tsA || !tsB) return 0;
+  return Math.round((dateOnlyTs(tsB) - dateOnlyTs(tsA)) / (24 * 3600 * 1000));
+}
+function calcAgeByDate(birthStr){
+  if(!birthStr) return -1;
+  const birth = new Date(birthStr);
+  if(isNaN(birth.getTime())) return -1;
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if(m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+  return age;
+}
+/* 清理字符串用于错误提示 */
+function trimPhone(v){ return String(v||"").replace(/\D/g,"").slice(0,11); }
+/* 从全量记录中取某电话的已存姓名（用于一致性校验） */
+function getStoredNamesByPhone(phone){
+  if(!phone) return [];
+  return [...new Set(records.filter(r => r.phone === phone).map(r => r.name))].filter(Boolean);
+}
+
+/* ============================================================
+   状态
+   ============================================================ */
+let records = [];
+let curStage = "试食前";
+let chartMetric = "avg";
+let lastResult = null;
+let currentPhone = "";
+
+function myRecords(){
+  if(!currentPhone) return [];
+  return records.filter(r => r.phone === currentPhone);
+}
+function tagsFromScores(results){
+  if(!Array.isArray(results) || !results.length) return null;
+  const normal = results.find(r => r.normal);
+  const biased = results.filter(r => !r.normal);
+  if(!normal || !biased.length) return null;
+  let normalTag;
+  if(normal.score >= 60 && biased.every(r => r.score < 30)) normalTag = "是";
+  else if(normal.score >= 60 && biased.every(r => r.score < 40)) normalTag = "基本是";
+  else normalTag = "否";
+  const tags = results.map(r=>{
+    if(r.normal) return normalTag;
+    if(r.score >= 40) return "是";
+    if(r.score >= 30) return "倾向是";
+    return "否";
+  });
+  return {tags, normalTag};
+}
+function load(){
+  try{ records = JSON.parse(localStorage.getItem(STORE_KEY) || "[]") || []; }
+  catch(e){ records = []; }
+  if(!Array.isArray(records)) records = [];
+  let fixed = false;
+  records.forEach(r=>{
+    if(r.stage === "基线") r.stage = "试食前";
+    else if(r.stage === "其他" || (r.stage && /^第\d+周$/.test(r.stage))) r.stage = "试食后";
+    else if(r.stage !== "试食前" && r.stage !== "试食后") r.stage = "试食前";
+    if(r.date){
+      r.date = String(r.date).replace(" ", "T");
+      if(r.date.indexOf("T") === -1) r.date += "T00:00";
+    }
+    const t = tagsFromScores(r.results);
+    if(t && JSON.stringify(t.tags) !== JSON.stringify(r.tags)){
+      r.tags = t.tags; r.normalTag = t.normalTag; fixed = true;
+    }
+  });
+  if(fixed) try{ localStorage.setItem(STORE_KEY, JSON.stringify(records)); }catch(e){}
+}
+function persist(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(records)); }
+  catch(e){ toast("本机存储失败，请检查浏览器设置"); }
+}
+
+/* ============================================================
+   城市下拉初始化
+   ============================================================ */
+(function initCities(){
+  const sel = $("fCityManual");
+  if(!sel) return;
+  Object.keys(CITIES).forEach(prov=>{
+    const og = document.createElement("optgroup");
+    og.label = prov;
+    CITIES[prov].forEach(c=>{
+      const o = document.createElement("option");
+      o.value = c; o.textContent = c;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+})();
+
+/* ============================================================
+   字段错误提示：统一接口
+   ============================================================ */
+function setFieldError(el, errId, msg){
+  if(el) el.classList.add("error");
+  const h = $(errId);
+  if(h){ h.textContent = msg; h.classList.add("show"); }
+}
+function clearFieldError(el, errId){
+  if(el) el.classList.remove("error");
+  const h = $(errId);
+  if(h){ h.textContent = ""; h.classList.remove("show"); }
+}
+function clearAllFieldErrors(){
+  document.querySelectorAll('.form-item input.error, .form-item select.error, .form-item input.miss, .form-item select.miss').forEach(el=>{
+    el.classList.remove("error","miss");
+  });
+  document.querySelectorAll('.field-err.show').forEach(el=>{
+    el.classList.remove("show"); el.textContent = "";
+  });
+  showErr("");
+}
+
+/* ============================================================
+   实时校验函数：返回 true 表示通过
+   参数 silent=true 表示不显示错误（用于初始化时不打扰用户）
+   ============================================================ */
+function validateName(silent){
+  const el = $("fName");
+  const errId = "fNameErr";
+  const v = el.value.trim();
+  if(!v){
+    if(!silent) setFieldError(el, errId, "请填写姓名");
+    return false;
+  }
+  const phone = trimPhone($("fPhone").value);
+  if(/^1[3-9]\d{9}$/.test(phone)){
+    const names = getStoredNamesByPhone(phone);
+    if(names.length > 0 && !names.includes(v)){
+      setFieldError(el, errId, `该联系电话已关联【${names[0]}】，请确认姓名是否一致，或更换联系电话`);
+      return false;
+    }
+  }
+  clearFieldError(el, errId);
+  return true;
+}
+function validateGender(silent){
+  const el = document.querySelector('input[name=gender]:checked');
+  const errId = "fGenderErr";
+  if(!el){
+    if(!silent){
+      const box = $("fGenderErr");
+      if(box){ box.textContent = "请选择性别"; box.classList.add("show"); }
+    }
+    return false;
+  }
+  const box = $("fGenderErr");
+  if(box){ box.classList.remove("show"); box.textContent = ""; }
+  return true;
+}
+function validateBirth(silent){
+  const el = $("fBirth");
+  const errId = "fBirthErr";
+  if(!el.value){
+    if(!silent) setFieldError(el, errId, "请选择出生年月");
+    return false;
+  }
+  const age = calcAgeByDate(el.value);
+  if(age < 0){
+    if(!silent) setFieldError(el, errId, "出生年月格式不正确");
+    return false;
+  }
+  if(age < 18){
+    setFieldError(el, errId, `未满18周岁（当前${age}岁），无法自主完成测评`);
+    return false;
+  }
+  clearFieldError(el, errId);
+  return true;
+}
+function validatePhone(silent){
+  const el = $("fPhone");
+  const errId = "fPhoneErr";
+  const v = el.value.trim();
+  if(!v){
+    if(!silent) setFieldError(el, errId, "请填写联系电话");
+    return false;
+  }
+  if(!/^1[3-9]\d{9}$/.test(v)){
+    if(!silent) setFieldError(el, errId, "手机号码格式不正确，应为1开头的11位数字");
+    return false;
+  }
+  // 姓名一致性
+  const name = $("fName").value.trim();
+  if(name){
+    const names = getStoredNamesByPhone(v);
+    if(names.length > 0 && !names.includes(name)){
+      setFieldError(el, errId, `该电话已关联【${names[0]}】，与当前姓名不一致`);
+      return false;
+    }
+  }
+  clearFieldError(el, errId);
+  return true;
+}
+function validateCity(silent){
+  const manual = $("fCityManual");
+  const city = ($("fCity").value || (manual ? manual.value : "") || "").trim();
+  const errId = "fCityErr";
+  if(!city){
+    if(!silent) setFieldError(manual, errId, "请点击「自动定位」或手动选择城市");
+    return false;
+  }
+  clearFieldError(manual, errId);
+  return true;
+}
+function validateChannel(silent){
+  const el = $("fChannel");
+  const errId = "fChannelErr";
+  if(!el.value.trim()){
+    if(!silent) setFieldError(el, errId, "推荐渠道为必填项，请填写推荐人、推荐公司或推荐门店");
+    return false;
+  }
+  clearFieldError(el, errId);
+  return true;
+}
+function validateAssessTime(silent){
+  const el = $("fAssessTime");
+  const errId = "fAssessTimeErr";
+  if(!el.value){
+    if(!silent) setFieldError(el, errId, "请填写评估时间（可点「获取网络时间」自动同步）");
+    return false;
+  }
+  if(parseLocalDT(el.value) > Date.now() + 60000){
+    if(!silent) setFieldError(el, errId, "评估时间不能晚于当前时间");
+    return false;
+  }
+  clearFieldError(el, errId);
+  return true;
+}
+function validateCycle(silent){
+  if(curStage !== "试食后"){ clearFieldError($("fCycle"), "cycleErr"); return true; }
+  const el = $("fCycle");
+  const errId = "cycleErr";
+  const n = parseFloat(el.value);
+  if(!n || isNaN(n) || n <= 0){
+    if(!silent) setFieldError(el, errId, "请填写大于 0 的试食周期（如 2 周）");
+    return false;
+  }
+  // 已有自动计算提示时不覆盖
+  const h = $(errId);
+  if(h && h.textContent && h.textContent.indexOf("已按首次记录") === 0){
+    el.classList.remove("error");
+    return true;
+  }
+  clearFieldError(el, errId);
+  return true;
+}
+
+/* ============================================================
+   事件绑定：实时校验
+   ============================================================ */
+/* 姓名：输入即校验；与手机号互相关联 */
+$("fName").addEventListener("input", ()=>{ validateName(false); validatePhone(false); });
+$("fName").addEventListener("blur", ()=>{ validateName(false); });
+/* 性别 */
+document.querySelectorAll('input[name=gender]').forEach(r=>{
+  r.addEventListener("change", ()=>{ validateGender(false); });
+});
+/* 出生年月：change 立即校验（含年龄≥18） */
+$("fBirth").addEventListener("change", ()=>{ validateBirth(false); });
+$("fBirth").addEventListener("blur", ()=>{ validateBirth(false); });
+/* 手机号：输入只允许数字，满11位立即校验格式+姓名一致性 */
+$("fPhone").addEventListener("input", e=>{
+  e.target.value = e.target.value.replace(/\D/g,"").slice(0,11);
+  if(e.target.value.length === 11){
+    validatePhone(false);
+    validateName(false);
+  } else {
+    // 未满11位时清掉"格式"错误，避免中途报错干扰
+    const h = $("fPhoneErr");
+    if(h && h.textContent && h.textContent.indexOf("格式") >= 0){ clearFieldError(e.target, "fPhoneErr"); }
+  }
+});
+$("fPhone").addEventListener("blur", ()=>{ validatePhone(false); validateName(false); });
+/* 城市：手动下拉 change 时清除错误 */
+$("fCityManual").addEventListener("change", e=>{
+  $("fCity").value = e.target.value;
+  const st = $("locStatus");
+  if(e.target.value){ st.textContent = "已选择：" + e.target.value; st.style.color = "var(--primary-dark)"; }
+  validateCity(false);
+});
+/* 推荐渠道：失焦校验 */
+$("fChannel").addEventListener("blur", ()=>{ validateChannel(false); });
+/* 评估时间：change 时校验；试食后时同步重算周期 */
+$("fAssessTime").addEventListener("change", ()=>{
+  validateAssessTime(false);
+  if(curStage === "试食后") autoCalcCycle();
+});
+$("fAssessTime").addEventListener("input", ()=>{
+  const h = $("fAssessTimeErr");
+  if(h && h.textContent && h.textContent.indexOf("晚于") >= 0) clearFieldError($("fAssessTime"), "fAssessTimeErr");
+  if(curStage === "试食后") autoCalcCycle();
+});
+/* 试食周期：输入时清除错误（不主动报错，避免打字中打扰） */
+$("fCycle").addEventListener("input", ()=>{
+  const h = $("cycleErr");
+  if(h && h.textContent && h.textContent.indexOf("请填写") >= 0){
+    $("fCycle").classList.remove("error");
+    h.classList.remove("show"); h.textContent = "";
+  }
+});
+
+/* ============================================================
+   试食后：自动计算与首次记录的自然日间隔
+   ============================================================ */
+function findBaselineRecord(phone, excludeDate){
+  if(!phone) return null;
+  const list = records.filter(r => r.phone === phone && parseLocalDT(r.date) > 0);
+  if(!list.length) return null;
+  const filtered = excludeDate ? list.filter(r => r.date !== excludeDate) : list;
+  if(!filtered.length) return null;
+  let earliest = filtered[0], earliestTs = parseLocalDT(earliest.date);
+  filtered.forEach(r=>{
+    const t = parseLocalDT(r.date);
+    if(t < earliestTs){ earliestTs = t; earliest = r; }
+  });
+  return earliest;
+}
+function pickCycleUnit(days){
+  if(days < 7) return {val: days, unit: "天"};
+  if(days < 30) return {val: Math.round(days / 7 * 10) / 10, unit: "周"};
+  return {val: Math.round(days / 30 * 10) / 10, unit: "月"};
+}
+function autoCalcCycle(){
+  if(curStage !== "试食后") return;
+  const phone = currentPhone || trimPhone($("fPhone").value);
+  const assessTime = $("fAssessTime").value;
+  const errEl = $("cycleErr");
+  const cycleEl = $("fCycle");
+  const setHint = (msg, color) => {
+    errEl.textContent = msg;
+    errEl.classList.add("show");
+    errEl.style.color = color || "var(--muted)";
+  };
+  if(!/^1[3-9]\d{9}$/.test(phone)){
+    setHint("请先填写正确的联系电话，以便自动计算试食周期", "var(--muted)");
+    return;
+  }
+  if(!assessTime){
+    setHint("请先填写评估时间，以便自动计算试食周期", "var(--muted)");
+    return;
+  }
+  const baseRec = findBaselineRecord(phone, assessTime);
+  if(!baseRec){
+    setHint("未找到该电话的既往记录，请手动填写试食周期", "var(--muted)");
+    return;
+  }
+  const baseTs = parseLocalDT(baseRec.date);
+  const curTs = parseLocalDT(assessTime);
+  const days = dateDiffDays(baseTs, curTs);
+  if(days < 0){
+    setHint("评估时间早于首次记录时间，请检查评估时间", "var(--accent)");
+    return;
+  }
+  const {val, unit} = pickCycleUnit(days);
+  cycleEl.value = val;
+  $("fCycleUnit").value = unit;
+  cycleEl.classList.remove("error");
+  setHint(`已按首次记录（${fmtDateTime(baseRec.date)}）自动计算：间隔 ${days} 天 ≈ ${val} ${unit}，可手动修改`, "var(--primary-dark)");
+}
+
+/* ============================================================
+   阶段选择
+   ============================================================ */
+function renderStages(){
+  const box = $("stageGroup");
+  const mine = myRecords();
+  const saved = {};
+  mine.forEach(r => { saved[r.stage] = true; });
+  box.innerHTML = STAGES.map(s=>{
+    const on = s === curStage ? " on" : "";
+    const dot = saved[s] ? '<span class="dot"></span>' : "";
+    return `<span class="stage${on}" data-stage="${s}">${esc(stageText(s))}${dot}</span>`;
+  }).join("");
+  $("cycleBox").style.display = curStage === "试食后" ? "" : "none";
+  const cnt = mine.filter(r => r.stage === curStage).length;
+  if(!currentPhone){
+    $("stageMeta").textContent = "尚未加载记录。可先填写基本信息并完成一次测评，或输入手机号后点击「📂 加载我的记录」。";
+  } else if(curStage === "试食后"){
+    const after = mine.filter(r => r.stage === "试食后").map(r=>stageLabel(r));
+    $("stageMeta").textContent = cnt
+      ? `「试食后」已保存 ${cnt} 条记录：` + after.join("、") + "。继续测评将新增一条，按周期由短到长排列。"
+      : `「试食后」尚无记录，请填写试食周期后完成测评。`;
+  } else {
+    $("stageMeta").textContent = cnt
+      ? `「试食前」已保存 ${cnt} 条记录，继续测评将新增一条。`
+      : `「试食前」尚无记录，完成测评后点击「计算并保存本次结果」。`;
+  }
+}
+$("stageGroup").addEventListener("click", e=>{
+  const el = e.target.closest(".stage");
+  if(!el) return;
+  curStage = el.getAttribute("data-stage");
+  renderStages();
+  if(curStage === "试食后") autoCalcCycle();
+});
+
+/* ============================================================
+   网络时间
+   ============================================================ */
+const TIME_HEADER_SOURCES = [
+  "https://www.baidu.com/favicon.ico",
+  "https://www.qq.com/favicon.ico",
+  "https://a.jd.com//ajax/queryServerData.html"
+];
+const TIME_JSON_SOURCES = [
+  { url:"https://timeapi.io/api/Time/current/zone?timeZone=Asia/Shanghai",
+    pick:j=>{
+      if(j && typeof j.year === "number"){
+        const z = n => String(n).padStart(2,"0");
+        return j.year + "-" + z(j.month) + "-" + z(j.day) + "T" + z(j.hour) + ":" + z(j.minute) + ":00";
+      }
+      return null;
+    } }
+];
+function setTimeStatus(msg, kind){
+  const el = $("timeStatus");
+  el.textContent = msg;
+  el.style.color = kind === "ok" ? "var(--primary-dark)" : kind === "fail" ? "var(--accent)" : "var(--muted)";
+}
+async function fetchWithTimeout(url, ms){
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), ms);
+  try{
+    const res = await fetch(url, {signal:ctrl.signal, cache:"no-store", mode:"cors"});
+    clearTimeout(timer);
+    return res;
+  }catch(e){ clearTimeout(timer); throw e; }
+}
+async function fetchNetworkDate(){
+  for(const url of TIME_HEADER_SOURCES){
+    try{
+      const res = await fetchWithTimeout(url, 5000);
+      const h = res.headers.get("date");
+      if(h){ const d = new Date(h); if(!isNaN(d.getTime())) return d; }
+    }catch(e){ /* next */ }
+  }
+  for(const src of TIME_JSON_SOURCES){
+    try{
+      const res = await fetchWithTimeout(src.url, 6000);
+      if(!res.ok) continue;
+      const j = await res.json();
+      const raw = src.pick(j);
+      if(!raw) continue;
+      const d = new Date(raw);
+      if(!isNaN(d.getTime())) return d;
+    }catch(e){ /* next */ }
+  }
+  return null;
+}
+async function syncNetworkTime(manual){
+  const btn = $("netTimeBtn");
+  btn.disabled = true;
+  setTimeStatus("正在获取网络时间…");
+  const d = await fetchNetworkDate();
+  if(d){
+    $("fAssessTime").value = toLocalInput(d);
+    setTimeStatus("已同步网络时间（" + fmtDateTime($("fAssessTime").value) + "）· 如与实际不符可手动修改", "ok");
+    btn.disabled = false;
+    validateAssessTime(true);
+    if(curStage === "试食后") autoCalcCycle();
+    return true;
+  }
+  $("fAssessTime").value = nowLocalInput();
+  setTimeStatus("未能连接网络时间服务，已改用本机系统时间 · 可手动修改", "fail");
+  btn.disabled = false;
+  validateAssessTime(true);
+  if(curStage === "试食后") autoCalcCycle();
+  return false;
+}
+$("netTimeBtn").addEventListener("click", ()=>syncNetworkTime(true));
+
+/* ============================================================
+   题目渲染
+   ============================================================ */
+function render(){
+  const box = $("questions");
+  let html = "";
+  DATA.forEach((c, ci)=>{
+    html += `<div class="card" id="card${ci}"><h2><span class="step">3</span>${esc(c.name)} <span class="badge">${c.normal?"正常体质":"偏颇体质"}</span></h2>`;
+    if(c.note) html += `<p class="hint">${c.note}</p>`;
+    if(c.genderPick){
+      html += `<div class="gender-box" id="genderBox">◆ 第(3)(4)条为性别限定条目，按您在上方"基本信息"中选择的性别作答。</div>`;
+    }
+    c.items.forEach((it, ii)=>{
+      const key = `c${ci}i${ii}`;
+      const gattr = it.gender ? ` data-g="${it.gender}"` : "";
+      const star = it.rev ? ` <span class="rev">*</span>` : "";
+      const glabel = it.label ? ` <span style="color:var(--accent);font-size:.78rem">（${it.label}）</span>` : "";
+      html += `<div class="q"${gattr} id="q${key}">
+        <div class="qt">${ii+1}. ${esc(it.q)}${star}${glabel}</div>
+        <div class="scale">` +
+        LIKERT.map((l,v)=>`<label><input type="radio" name="${key}" value="${v+1}">${l}</label>`).join("") +
+        `</div></div>`;
+    });
+    html += `</div>`;
+  });
+  box.innerHTML = html;
+  document.querySelectorAll('input[name=gender]').forEach(r => r.addEventListener('change', applyGender));
+  document.querySelectorAll('#questions input[type=radio]').forEach(r => r.addEventListener('change', updateProgress));
+  applyGender();
+  updateProgress();
+}
+
+function curGender(){
+  const r = document.querySelector('input[name=gender]:checked');
+  return r ? r.value : "";
+}
+function applyGender(){
+  const g = curGender();
+  document.querySelectorAll('#questions .q[data-g]').forEach(q=>{
+    const show = !g || q.dataset.g === g;
+    q.style.display = show ? "" : "none";
+    if(!show) q.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  });
+  const box = $("genderBox");
+  if(box){
+    box.textContent = !g ? '◆ 第(3)(4)条为性别限定条目，请先在上方"基本信息"中选择性别。'
+      : g === "female" ? "◆ 性别限定条目：您选择的是女性，请回答第(3)条（第(4)条无需作答）。"
+      : "◆ 性别限定条目：您选择的是男性，请回答第(4)条（第(3)条无需作答）。";
+  }
+  updateProgress();
+}
+function updateProgress(){
+  let total = 0, answered = 0;
+  document.querySelectorAll('#questions .q').forEach(q=>{
+    if(q.style.display === "none") return;
+    total++;
+    if(q.querySelector('input[type=radio]:checked')){ answered++; q.classList.add('done'); }
+    else q.classList.remove('done');
+  });
+  $("pcount").textContent = `已答 ${answered} / ${total}`;
+  $("pfill").style.width = total ? (answered/total*100) + "%" : "0";
+}
+function showErr(msg){
+  const err = $("err");
+  err.textContent = msg;
+  err.style.display = msg ? "block" : "none";
+}
+
+/* ============================================================
+   加载我的记录
+   ============================================================ */
+function loadMyRecords(){
+  const phone = trimPhone($("fPhone").value);
+  const st = $("loadStatus");
+  if(!/^1[3-9]\d{9}$/.test(phone)){
+    setFieldError($("fPhone"), "fPhoneErr", "请输入正确的11位手机号码");
+    st.textContent = "请输入正确的11位手机号码";
+    st.style.color = "var(--accent)";
+    $("fPhone").focus();
+    return;
+  }
+  clearFieldError($("fPhone"), "fPhoneErr");
+  currentPhone = phone;
+  const list = myRecords();
+  const names = [...new Set(list.map(r => r.name))].filter(Boolean);
+  if(list.length === 0){
+    st.textContent = "该手机号暂无历史记录，可继续完成首次测评";
+    st.style.color = "var(--muted)";
+    toast("该手机号暂无历史记录");
+  } else {
+    st.textContent = `已加载 ${list.length} 条记录（${names.join("、")} · ${phone.slice(-4)}）`;
+    st.style.color = "var(--primary-dark)";
+    toast(`已加载 ${list.length} 条记录`);
+  }
+  renderAll();
+  if(curStage === "试食后") autoCalcCycle();
+}
+$("loadMyBtn").addEventListener("click", loadMyRecords);
+
+/* ============================================================
+   计算 + 保存
+   ============================================================ */
+function calc(){
+  clearAllFieldErrors();
+
+  /* 顺序校验：遇到第一个错误立即停止 + 红框 + 滚动 + 聚焦 */
+  const checks = [
+    {ok: validateName(false),     el: $("fName"),    cardId: "infoCard"},
+    {ok: validateGender(false),   el: null,          cardId: "infoCard"},
+    {ok: validateBirth(false),    el: $("fBirth"),   cardId: "infoCard"},
+    {ok: validatePhone(false),    el: $("fPhone"),   cardId: "infoCard"},
+    {ok: validateCity(false),     el: $("fCityManual"), cardId: "infoCard"},
+    {ok: validateChannel(false),  el: $("fChannel"), cardId: "infoCard"},
+    {ok: validateAssessTime(false), el: $("fAssessTime"), cardId: "stageCard"}
+  ];
+  for(const c of checks){
+    if(!c.ok){
+      showErr("✖ 请修正标红字段后重试");
+      const target = c.el || $(c.cardId);
+      const card = $(c.cardId);
+      if(card) card.scrollIntoView({behavior:'smooth', block:'start'});
+      if(c.el){
+        setTimeout(()=>{ try{ c.el.focus(); }catch(e){} }, 300);
+      }
+      return;
+    }
+  }
+  /* 试食周期 */
+  if(curStage === "试食后" && !validateCycle(false)){
+    showErr("✖ 请填写有效的试食周期");
+    $("stageCard").scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(()=>{ try{ $("fCycle").focus(); }catch(e){} }, 300);
+    return;
+  }
+
+  const g = curGender();
+  const nameVal = $("fName").value.trim();
+  const phoneVal = trimPhone($("fPhone").value);
+  const city = ($("fCity").value || $("fCityManual").value || "").trim();
+  const channelVal = $("fChannel").value.trim();
+  const assessDT = $("fAssessTime").value;
+  const age = calcAgeByDate($("fBirth").value);
+
+  let cycle = null, cycleUnit = null;
+  if(curStage === "试食后"){
+    cycle = parseFloat($("fCycle").value);
+    cycleUnit = $("fCycleUnit").value || "周";
+  }
+
+  /* 校验题目 */
+  let firstMissing = null;
+  DATA.forEach((c, ci)=>{
+    c.items.forEach((it, ii)=>{
+      if(it.gender && it.gender !== g) return;
+      const key = `c${ci}i${ii}`;
+      const r = document.querySelector(`input[name="${key}"]:checked`);
+      const qEl = $('q'+key);
+      if(r){ qEl.classList.add('done'); }
+      else { qEl.classList.add('miss-q'); if(!firstMissing) firstMissing = qEl; }
+    });
+  });
+  if(firstMissing){
+    showErr("✖ 还有题目未作答，请完成后重新计算");
+    firstMissing.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  /* ---- 计分 ---- */
+  const results = DATA.map((c, ci)=>{
+    let sum = 0, n = 0;
+    const itemDetail = [];
+    c.items.forEach((it, ii)=>{
+      if(it.gender && it.gender !== g){
+        itemDetail.push({idx:ii+1, q:it.q, rev:!!it.rev, val:null, used:false, rawv:null, note:it.label||""});
+        return;
+      }
+      let v = +document.querySelector(`input[name="c${ci}i${ii}"]:checked`).value;
+      const rawv = v;
+      if(it.rev) v = 6 - v;
+      sum += v; n++;
+      itemDetail.push({idx:ii+1, q:it.q, rev:!!it.rev, val:rawv, used:true, rawv:v, note:it.label||""});
+    });
+    return {name:c.name, normal:!!c.normal, n, raw:sum, score:Math.round((sum-n)/(n*4)*100), items:itemDetail};
+  });
+
+  const biased = results.filter(r => !r.normal);
+  const biasedYes = biased.filter(r => r.score >= 40);
+  const biasedTend = biased.filter(r => r.score >= 30 && r.score < 40);
+  const {tags, normalTag} = tagsFromScores(results);
+
+  const nowStr = new Date().toLocaleString('zh-CN');
+  $("resInfo").innerHTML =
+    `姓名：${esc(nameVal)}　性别：${g==="male"?"男":"女"}　年龄：${age}岁　城市：${esc(city)}<br>`+
+    `联系电话：${esc(phoneVal.slice(0,3))}****${esc(phoneVal.slice(-4))}　推荐渠道：${esc(channelVal)}<br>`+
+    `评估阶段：<b style="color:var(--primary-dark)">${esc(curStage === "试食后" ? stageLabel({stage:curStage, cycle, cycleUnit}) : "试食前")}</b>　`+
+    `评估时间：<b style="color:var(--primary-dark)">${fmtDateTime(assessDT)}</b><br>`+
+    `提交时间：${nowStr}`;
+
+  const tagCls = t => t==="是" ? "tag-yes" : (t==="倾向是"||t==="基本是") ? "tag-tend" : "tag-no";
+  let rows = `<tr><th>体质类型</th><th>原始分</th><th>转化分</th><th>判定</th><th style="width:26%">程度</th></tr>`;
+  results.forEach((r, i)=>{
+    rows += `<tr><td>${r.name}${r.normal?'（平和）':''}</td><td>${r.raw}</td><td>${r.score}</td>` +
+      `<td><span class="${tagCls(tags[i])}">${tags[i]}</span></td>` +
+      `<td><div class="bar"><i style="width:${r.score}%"></i></div></td></tr>`;
+  });
+  $("resTable").innerHTML = rows;
+
+  let sumText;
+  if(normalTag === "是") sumText = "判定为平和质，恭喜您的体质平和！";
+  else if(normalTag === "基本是") sumText = "判定为平和质倾向，您的体质基本平和。";
+  else sumText = "未达到平和质判定标准。";
+  if(biasedYes.length) sumText += ` 偏颇体质：<b>${biasedYes.map(r=>r.name).join("、")}</b>。`;
+  if(biasedTend.length) sumText += ` 倾向体质：${biasedTend.map(r=>r.name).join("、")}。`;
+  if(!biasedYes.length && !biasedTend.length && normalTag === "否") sumText += " 未发现明显偏颇体质。";
+  sumText += "<br><span style='color:var(--muted);font-size:.8rem'>本结果依据 GB/T 46939—2025 判定规则自动生成，仅供自测参考，不构成医疗诊断。</span>";
+  $("summary").innerHTML = sumText;
+
+  renderItemDetail(results, g);
+
+  const avgScore = +(results.reduce((a,r)=>a+r.score,0) / results.length).toFixed(1);
+  const totalRaw = results.reduce((a,r)=>a+r.raw,0);
+
+  const rec = {
+    stage: curStage,
+    cycle, cycleUnit,
+    date: assessDT,
+    ts: Date.now(),
+    name: nameVal,
+    gender: g === "male" ? "男" : "女",
+    age, phone: phoneVal,
+    city, channel: channelVal,
+    results: results.map(r=>({name:r.name, normal:r.normal, n:r.n, raw:r.raw, score:r.score})),
+    items: results.map(r=>({name:r.name, items:r.items})),
+    tags, normalTag, avg: avgScore, totalRaw
+  };
+  lastResult = rec;
+  const same = records.findIndex(r => r.phone === rec.phone && r.date === rec.date);
+  if(same >= 0){
+    records[same] = rec;
+    toast("已更新该评估时间下的记录");
+  } else {
+    records.push(rec);
+    toast("已保存「" + stageLabel(rec) + "」评估（" + fmtDateTime(rec.date) + "）");
+  }
+  persist();
+  currentPhone = phoneVal;
+  $("loadStatus").textContent = `已加载 ${myRecords().length} 条记录（${nameVal} · ${phoneVal.slice(-4)}）`;
+  $("loadStatus").style.color = "var(--primary-dark)";
+
+  const res = $("result");
+  res.style.display = "block";
+  renderAll();
+  res.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ============================================================
+   云端提交
+   ============================================================ */
+var CLOUD_ENDPOINT   = "https://tizhi-assessment.app.workbuddy.host";
+var CLOUD_PUBLIC_KEY = "wbpk_byvL6XxaCsGp8MOi8oXuz4_4bSPVYoOQ5RZ4crZYwIXpxXBpFG2FD8y";
+
+var _cloud = null, _cloudPromise = null;
+function loadCloudSdk(){
+  if(_cloudPromise) return _cloudPromise;
+  _cloudPromise = new Promise(function(resolve, reject){
+    if(window.WorkBuddyCloud){ resolve(window.WorkBuddyCloud); return; }
+    var urls = [
+      "https://cdn.jsdelivr.net/npm/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js",
+      "https://unpkg.com/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js"
+    ];
+    var i = 0;
+    (function next(){
+      if(i >= urls.length){ reject(new Error("云服务组件加载失败，请检查网络")); return; }
+      var s = document.createElement("script");
+      s.src = urls[i++];
+      s.onload = function(){ window.WorkBuddyCloud ? resolve(window.WorkBuddyCloud) : next(); };
+      s.onerror = next;
+      document.head.appendChild(s);
+    })();
+  });
+  return _cloudPromise;
+}
+function getCloud(){
+  if(_cloud) return Promise.resolve(_cloud);
+  return loadCloudSdk().then(function(W){
+    _cloud = W.createWorkBuddyCloud({
+      endpoint: CLOUD_ENDPOINT,
+      publishableKey: CLOUD_PUBLIC_KEY
+    });
+    return _cloud;
+  });
+}
+function cloudErrText(e){
+  if(!e) return "未知错误";
+  if(typeof e === "string") return e;
+  return e.message || e.error_description || e.details || e.error || e.code || JSON.stringify(e);
+}
+function buildTicket(){
+  var d = new Date(), p = function(n){ return (n < 10 ? "0" : "") + n; };
+  return "TZ" + d.getFullYear() + p(d.getMonth()+1) + p(d.getDate()) + "-" +
+         p(d.getHours()) + p(d.getMinutes()) + p(d.getSeconds()) + "-" +
+         Math.random().toString(36).slice(2, 6).toUpperCase();
+}
+function recToRow(rec, ticket){
+  var biased = rec.results.filter(function(r){ return !r.normal && r.score >= 40; })
+                          .map(function(r){ return r.name; }).join("、");
+  var tend   = rec.results.filter(function(r){ return !r.normal && r.score >= 30 && r.score < 40; })
+                          .map(function(r){ return r.name; }).join("、");
+  return {
+    ticket:      ticket,
+    name:        rec.name || "",
+    gender:      rec.gender || null,
+    age:         (rec.age != null && rec.age !== "" ? Number(rec.age) : null),
+    phone:       rec.phone || null,
+    city:        rec.city || null,
+    channel:     rec.channel || null,
+    stage:       rec.stage === "试食后" ? "试食后" : "试食前",
+    cycle:       (rec.cycle != null && rec.cycle !== "" ? String(rec.cycle) : null),
+    cycle_unit:  rec.cycleUnit || null,
+    stage_label: stageLabel(rec),
+    assess_at:   rec.date || null,
+    avg_score:   Number(rec.avg.toFixed(2)),
+    total_raw:   rec.totalRaw,
+    normal_tag:  rec.normalTag || null,
+    biased:      biased || null,
+    tendency:    tend || null,
+    results:     rec.results.map(function(r){ return { name:r.name, raw:r.raw, n:r.n, score:r.score }; }),
+    item_detail: rec.items || [],
+    report_text: buildReportText(rec)
+  };
+}
+function submitToCloud(rec){
+  if(!rec){ toast("请先完成一次测评计算"); return; }
+  var btn = $("submitBtn");
+  btn.disabled = true;
+  setSubmitStatus("正在提交，请稍候…");
+  getCloud().then(function(cloud){
+    var ticket = buildTicket();
+    return cloud.database.from("tizhi_submissions").insert(recToRow(rec, ticket))
+      .then(function(res){
+        if(res && res.error) throw res.error;
+        rec.ticket = ticket;
+        rec.submitted = true;
+        persist();
+        renderRecords();
+        setSubmitStatus("✅ 提交成功！受理编号 " + ticket + "　（建议截图保存，便于核对）", "ok");
+        toast("提交成功");
+      });
+  }).catch(function(e){
+    setSubmitStatus("提交失败：" + cloudErrText(e) + "　可先点「复制结果」保存内容，稍后重试。", "fail");
+  }).then(function(){
+    btn.disabled = false;
+  });
+}
+
+/* ============================================================
+   管理入口
+   ============================================================ */
+var _adminRows = [];
+var _adminOn = false;
+var ADMIN_VIEW_KEY = "tizhi_admin_view_v1";
+function isAdminView(){
+  try{ if(localStorage.getItem(ADMIN_VIEW_KEY) === "1") return true; }catch(e){}
+  try{
+    if(/(\?|&)admin=1(&|$)/.test(location.search || "")) return true;
+    if((location.hash || "") === "#admin") return true;
+  }catch(e){}
+  return false;
+}
+function setAdminView(on){
+  _adminOn = !!on;
+  var card = $("adminCard");
+  if(card) card.style.display = _adminOn ? "" : "none";
+  try{ localStorage.setItem(ADMIN_VIEW_KEY, _adminOn ? "1" : "0"); }catch(e){}
+  if(!_adminOn){
+    _adminRows = [];
+    $("adminTableBox").innerHTML = "";
+    $("adminPwd").value = "";
+    setAdminStatus("客户提交的结果会保存在后台，输入管理口令后可查看并导出。");
+  }
+}
+function bindAdminTap(){
+  var el = $("footerTap");
+  if(!el) return;
+  var n = 0, timer = null;
+  el.addEventListener("click", function(){
+    n++;
+    if(timer) clearTimeout(timer);
+    timer = setTimeout(function(){ n = 0; }, 1500);
+    if(n >= 5){
+      n = 0;
+      setAdminView(!_adminOn);
+      toast(_adminOn ? "已进入管理视图" : "已退出管理视图");
+    }
+  });
+}
+$("adminExitBtn").addEventListener("click", function(){
+  setAdminView(false);
+  toast("已退出管理视图");
+});
+function setAdminStatus(msg, kind){
+  var el = $("adminStatus");
+  if(!el) return;
+  el.textContent = msg;
+  el.style.color = kind === "ok" ? "var(--primary-dark)" : kind === "fail" ? "var(--accent)" : "var(--muted)";
+}
+function renderAdminTable(rows){
+  var box = $("adminTableBox");
+  var h = '<table class="res-table"><tr>' +
+    '<th>受理编号</th><th>提交时间</th><th>姓名</th><th>性别</th><th>年龄</th><th>手机</th>' +
+    '<th>城市</th><th>渠道</th><th>阶段</th><th>评估时间</th><th>均分</th><th>偏颇体质</th><th>倾向体质</th></tr>';
+  rows.forEach(function(r){
+    h += "<tr>" +
+      "<td>" + esc(r.ticket || "—") + "</td>" +
+      "<td>" + esc(r.created_at ? new Date(r.created_at).toLocaleString("zh-CN") : "—") + "</td>" +
+      "<td>" + esc(r.name || "—") + "</td>" +
+      "<td>" + esc(r.gender || "—") + "</td>" +
+      "<td>" + (r.age != null ? esc(String(r.age)) : "—") + "</td>" +
+      "<td>" + esc(r.phone || "—") + "</td>" +
+      "<td>" + esc(r.city || "—") + "</td>" +
+      "<td>" + esc(r.channel || "—") + "</td>" +
+      "<td>" + esc(r.stage_label || r.stage || "—") + "</td>" +
+      "<td>" + esc(fmtDateTime(r.assess_at)) + "</td>" +
+      "<td>" + (r.avg_score != null ? Number(r.avg_score).toFixed(1) : "—") + "</td>" +
+      "<td>" + esc(r.biased || "—") + "</td>" +
+      "<td>" + esc(r.tendency || "—") + "</td></tr>";
+  });
+  h += "</table>";
+  box.innerHTML = h;
+}
+function adminLoad(){
+  var pwd = ($("adminPwd").value || "").trim();
+  if(!pwd){ setAdminStatus("请输入管理口令", "fail"); return; }
+  var btn = $("adminBtn");
+  btn.disabled = true;
+  setAdminStatus("正在查询…");
+  getCloud().then(function(cloud){
+    return cloud.database.rpc("tizhi_admin_list", { p_pwd: pwd });
+  }).then(function(res){
+    if(res && res.error) throw res.error;
+    _adminRows = res.data || [];
+    if(!_adminRows.length){
+      $("adminTableBox").innerHTML = "";
+      setAdminStatus("口令正确，目前还没有客户提交记录。", "ok");
+      return;
+    }
+    renderAdminTable(_adminRows);
+    setAdminStatus("共 " + _adminRows.length + " 条提交记录（最多显示最近 500 条）。", "ok");
+  }).catch(function(e){
+    _adminRows = [];
+    $("adminTableBox").innerHTML = "";
+    setAdminStatus("查询失败：" + cloudErrText(e), "fail");
+  }).then(function(){ btn.disabled = false; });
+}
+function adminExportCsv(){
+  if(!_adminRows.length){ setAdminStatus("请先查询出记录再导出", "fail"); return; }
+  var head = ["受理编号","提交时间","姓名","性别","年龄","手机","城市","渠道","阶段","评估时间","转化分均分","原始分合计","偏颇体质","倾向体质"];
+  var rows = _adminRows.map(function(r){
+    return [
+      r.ticket || "", r.created_at ? new Date(r.created_at).toLocaleString("zh-CN") : "",
+      r.name || "", r.gender || "", r.age != null ? r.age : "", r.phone || "",
+      r.city || "", r.channel || "", r.stage_label || r.stage || "",
+      fmtDateTime(r.assess_at),
+      r.avg_score != null ? Number(r.avg_score).toFixed(1) : "",
+      r.total_raw != null ? r.total_raw : "",
+      r.biased || "", r.tendency || ""
+    ];
+  });
+  var csv = [head].concat(rows).map(function(a){
+    return a.map(function(v){ return '"' + String(v).replace(/"/g, '""') + '"'; }).join(",");
+  }).join("\r\n");
+  var blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "体质测评提交记录_" + todayISO() + ".csv";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); if(a.parentNode) a.parentNode.removeChild(a); }, 800);
+  toast("已导出 CSV");
+}
+
+/* ============================================================
+   结果文本
+   ============================================================ */
+function buildReportText(rec){
+  const L = [];
+  L.push("【中医体质测评问卷提交】");
+  L.push("姓名：" + (rec.name || "—"));
+  L.push("性别：" + (rec.gender || "—"));
+  L.push("年龄：" + (rec.age != null ? rec.age + "岁" : "—"));
+  L.push("手机号：" + (rec.phone || "—"));
+  L.push("城市：" + (rec.city || "—"));
+  L.push("推荐渠道：" + (rec.channel || "—"));
+  L.push("评估阶段：" + stageLabel(rec));
+  L.push("评估时间：" + fmtDateTime(rec.date));
+  L.push("提交时间：" + new Date(rec.ts).toLocaleString("zh-CN"));
+  L.push("");
+  L.push("-----体质得分明细-----");
+  rec.results.forEach((r, i)=>{
+    L.push(r.name + "　原始分 " + r.raw + " ／ 条目数 " + r.n + " ／ 转化分 " + r.score + " ／ 判定 " + (rec.tags[i] || "—"));
+  });
+  L.push("");
+  L.push("原始分合计：" + rec.totalRaw + "　转化分均分：" + rec.avg.toFixed(1));
+  L.push("");
+  const biased = rec.results.filter(r=>!r.normal && r.score >= 40).map(r=>r.name);
+  const tend = rec.results.filter(r=>!r.normal && r.score >= 30 && r.score < 40).map(r=>r.name);
+  L.push("判定小结：" + (rec.normalTag === "是" ? "判定为平和质" : rec.normalTag === "基本是" ? "判定为平和质倾向" : "未达到平和质判定标准"));
+  if(biased.length) L.push("偏颇体质：" + biased.join("、"));
+  if(tend.length)   L.push("倾向体质：" + tend.join("、"));
+  L.push("");
+  L.push("-----各题目得分明细-----");
+  (rec.items || []).forEach(grp=>{
+    L.push("■ " + grp.name);
+    grp.items.forEach(it=>{
+      if(!it.used){ L.push("   " + it.idx + ". " + it.q + "（" + (it.note || "") + "·本题未作答）"); return; }
+      const opt = LIKERT[it.val - 1] || "";
+      L.push("   " + it.idx + ". " + it.q + " → " + opt + "（" + it.val + "）" +
+        (it.rev ? "　逆向计分：" + it.val + "→" + it.rawv : "　计分：" + it.rawv));
+    });
+  });
+  L.push("");
+  L.push("（本结果依据 GB/T 46939—2025 判定规则自动生成，仅供自测参考，不构成医疗诊断。）");
+  return L.join("\n");
+}
+function setSubmitStatus(msg, kind){
+  const el = $("submitStatus");
+  if(!el) return;
+  el.textContent = msg;
+  el.style.color = kind === "ok" ? "var(--primary-dark)" : kind === "fail" ? "var(--accent)" : "var(--muted)";
+}
+function copyResult(rec){
+  if(!rec){ toast("请先完成一次测评计算"); return; }
+  const text = buildReportText(rec);
+  const done = ()=>{ toast("结果已复制，可粘贴到微信 / 邮件发送"); setSubmitStatus("已复制到剪贴板，可粘贴到微信或任意应用发送。"); };
+  const fallback = ()=>{
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      ok ? done() : setSubmitStatus("复制失败，请手动选择下方导出文本", "fail");
+    }catch(e){ setSubmitStatus("复制失败，请手动选择下方导出文本", "fail"); }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else fallback();
+}
+$("copyBtn").addEventListener("click", ()=>copyResult(lastResult));
+$("submitBtn").addEventListener("click", ()=>submitToCloud(lastResult));
+$("adminBtn").addEventListener("click", ()=>adminLoad());
+$("adminCsvBtn").addEventListener("click", ()=>adminExportCsv());
+bindAdminTap();
+if(isAdminView()) setAdminView(true);
+$("adminPwd").addEventListener("keydown", (e)=>{ if(e.key === "Enter") adminLoad(); });
+
+function renderItemDetail(results, g){
+  let h = '<table class="item-table">';
+  h += '<tr><th>题目</th><th class="num">选项</th><th class="num">分值</th><th class="num">计分</th></tr>';
+  results.forEach(r=>{
+    h += `<tr class="grp"><td colspan="4">${esc(r.name)}　原始分 ${r.raw} ／ 条目数 ${r.n} ／ 转化分 ${r.score}</td></tr>`;
+    r.items.forEach(it=>{
+      if(!it.used){
+        h += `<tr><td style="color:var(--muted)">${it.idx}. ${esc(it.q)} <span class="rev-tag">（${esc(it.note)}·本题未作答）</span></td>`+
+             `<td class="num" style="color:var(--muted)">—</td><td class="num" style="color:var(--muted)">—</td><td class="num" style="color:var(--muted)">—</td></tr>`;
+        return;
+      }
+      const opt = LIKERT[it.val-1] || "";
+      const revMark = it.rev ? ' <span class="rev-tag">逆向</span>' : "";
+      h += `<tr><td>${it.idx}. ${esc(it.q)}${revMark}</td>`+
+           `<td class="num">${esc(opt)}（${it.val}）</td>`+
+           `<td class="num">${it.val}</td>`+
+           `<td class="num"><b>${it.rawv}</b></td></tr>`;
+    });
+  });
+  h += '</table>';
+  $("itemTableBox").innerHTML = h;
+}
+
+/* ============================================================
+   趋势图
+   ============================================================ */
+function buildChartTabs(){
+  const box = $("chartTabs");
+  box.innerHTML = METRICS.map(m=>{
+    const on = m.key === chartMetric ? " on" : "";
+    return `<span class="ctab${on}" data-key="${m.key}">${esc(m.name)}</span>`;
+  }).join("");
+}
+$("chartTabs").addEventListener("click", e=>{
+  const el = e.target.closest(".ctab");
+  if(!el) return;
+  chartMetric = el.getAttribute("data-key");
+  buildChartTabs();
+  renderChart();
+});
+function metricValue(rec, key){
+  if(key === "avg") return rec.avg;
+  const idx = parseInt(key.slice(1), 10);
+  const target = METRICS[idx];
+  if(!target) return null;
+  const hit = rec.results.find(x=>x.name === target.name);
+  return hit ? hit.score : null;
+}
+function renderChart(){
+  const box = $("chartBox");
+  const mine = myRecords();
+  const sorted = sortRecords(mine);
+  const meta = METRICS.find(m=>m.key === chartMetric);
+  const nameSet = [...new Set(mine.map(r => r.name))].filter(Boolean);
+  const titleEl = $("chartTitleInfo");
+  if(currentPhone){
+    titleEl.textContent = `${nameSet.join("、") || "—"} · ${currentPhone.slice(-4)}`;
+  } else {
+    titleEl.textContent = "尚未加载记录";
+  }
+  if(!sorted.length){
+    box.innerHTML = '<div class="empty-tip">' +
+      (currentPhone ? '该手机号暂无记录。' : '请先在上方输入联系电话并点击「📂 加载我的记录」，或完成一次测评并保存。') +
+      '</div>';
+    $("chartLegend").innerHTML = '纵轴为转化分（0–100），横轴为「试食前 → 试食后」。趋势仅反映自评记录变化，不构成医疗诊断。';
+    return;
+  }
+  const pts = sorted.map(r=>({ rec:r, v: metricValue(r, chartMetric) })).filter(p=>p.v !== null && p.v !== undefined);
+  const W = 700, H = 270, L = 48, R = 22, T = 22, B = 52;
+  const iw = W - L - R, ih = H - T - B;
+  const n = pts.length;
+  const xs = pts.map((p,i)=> n === 1 ? L + iw/2 : L + (iw*i)/(n-1));
+  const y = v => T + ih - (v/100)*ih;
+  const s = [];
+  s.push(`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:560px;height:auto" role="img" aria-label="${esc(meta.name)}趋势图">`);
+  for(let g=0; g<=100; g+=20){
+    s.push(`<line x1="${L}" y1="${y(g)}" x2="${W-R}" y2="${y(g)}" stroke="#e3ebe8" stroke-width="1"/>`);
+    s.push(`<text x="${L-8}" y="${y(g)+4}" text-anchor="end" font-size="11" fill="#7a8a90">${g}</text>`);
+  }
+  if(meta && !meta.normal && !meta.avg){
+    s.push(`<line x1="${L}" y1="${y(40)}" x2="${W-R}" y2="${y(40)}" stroke="#e8c4ba" stroke-width="1.2" stroke-dasharray="4 4"/>`);
+    s.push(`<text x="${W-R}" y="${y(40)-4}" text-anchor="end" font-size="10.5" fill="#c0563a">判定阈值 40</text>`);
+  }
+  const basePt = pts.find(p=>p.rec.stage === "试食前");
+  if(basePt){
+    s.push(`<line x1="${L}" y1="${y(basePt.v)}" x2="${W-R}" y2="${y(basePt.v)}" stroke="#c9d6d2" stroke-width="1.5" stroke-dasharray="6 4"/>`);
+  }
+  const line = pts.map((p,i)=> xs[i] + "," + y(p.v)).join(" ");
+  s.push(`<polyline points="${line}" fill="none" stroke="#2e7d6b" stroke-width="2.5" stroke-linejoin="round"/>`);
+  pts.forEach((p,i)=>{
+    s.push(`<circle cx="${xs[i]}" cy="${y(p.v)}" r="5.5" fill="#fff" stroke="#2e7d6b" stroke-width="2.5"/>`);
+    s.push(`<text x="${xs[i]}" y="${y(p.v)-13}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2e7d6b">${(p.v).toFixed(1)}</text>`);
+    s.push(`<text x="${xs[i]}" y="${H-26}" text-anchor="middle" font-size="11.5" fill="#5b6b70">${esc(stageLabel(p.rec))}</text>`);
+    s.push(`<text x="${xs[i]}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="#9aa8ac">${fmtDateTime(p.rec.date)}</text>`);
+  });
+  s.push('</svg>');
+  box.innerHTML = s.join("");
+  const legend = $("chartLegend");
+  if(pts.length >= 2){
+    const first = pts[0], last = pts[n-1];
+    const diff = +(last.v - first.v).toFixed(1);
+    const sign = diff > 0 ? "+" : "";
+    let tone = diff >= 1 ? "上升" : diff <= -1 ? "下降" : "基本平稳";
+    let color = diff >= 1 ? "var(--primary)" : diff <= -1 ? "var(--accent)" : "var(--muted)";
+    legend.innerHTML =
+      `当前指标：<b>${esc(meta.name)}</b>　`+
+      `最早（${esc(stageLabel(first.rec))} ${fmtDateTime(first.rec.date)}）${first.v.toFixed(1)} 分 → `+
+      `最新（${esc(stageLabel(last.rec))} ${fmtDateTime(last.rec.date)}）${last.v.toFixed(1)} 分，变化 <b style="color:${color}">${sign}${diff}</b> 分，趋势${tone}。<br>`+
+      `纵轴为转化分（0–100），横轴为「试食前 → 试食后」。虚线为试食前参考线。趋势仅反映自评记录变化，不代表健康状况结论或产品功效评价，不构成医疗诊断。`;
+  } else {
+    legend.innerHTML = `当前指标：<b>${esc(meta.name)}</b>。当前仅 1 条记录，继续完成后续评估即可看到趋势变化。<br>`+
+      `纵轴为转化分（0–100），横轴为「试食前 → 试食后」。趋势仅反映自评记录变化，不构成医疗诊断。`;
+  }
+}
+
+/* ============================================================
+   历史记录
+   ============================================================ */
+function renderRecords(){
+  const box = $("recordsBox");
+  const mine = myRecords();
+  const sorted = sortRecords(mine);
+  const nameSet = [...new Set(mine.map(r => r.name))].filter(Boolean);
+  const titleEl = $("recordsTitleInfo");
+  if(currentPhone){
+    titleEl.textContent = `${nameSet.join("、") || "—"} · ${currentPhone.slice(-4)}`;
+  } else {
+    titleEl.textContent = "尚未加载记录";
+  }
+  if(!sorted.length){
+    box.innerHTML = '<div class="empty-tip">' +
+      (currentPhone ? '该手机号暂无历史记录。' : '请先在上方输入联系电话并点击「📂 加载我的记录」，或完成一次测评并保存。') +
+      '</div>';
+    return;
+  }
+  let h = '<table class="records"><tr><th>阶段</th><th>评估时间</th><th>姓名 · 尾号</th><th>原始分合计</th><th>均分</th><th>平和质</th><th>偏颇体质</th><th>操作</th></tr>';
+  sorted.slice().reverse().forEach(r=>{
+    const biased = r.results.filter(x=>!x.normal && x.score >= 40).map(x=>x.name);
+    h += `<tr>`+
+      `<td>${esc(stageLabel(r))}</td>`+
+      `<td>${fmtDateTime(r.date)}</td>`+
+      `<td>${esc(r.name||"—")} · ${r.phone?esc(r.phone.slice(-4)):"—"}</td>`+
+      `<td>${r.totalRaw}</td>`+
+      `<td><b>${r.avg.toFixed(1)}</b></td>`+
+      `<td><span class="${r.normalTag==="是"?"tag-yes":(r.normalTag==="基本是"?"tag-tend":"tag-no")}">${r.normalTag}</span></td>`+
+      `<td class="left">${biased.length?esc(biased.join("、")):'<span style="color:var(--muted)">无</span>'}</td>`+
+      `<td><button class="link-btn" data-view="${r.ts}">详情</button>　`+
+      (r.submitted
+        ? `<span class="link-btn" style="color:var(--primary-dark); cursor:default;" title="受理编号 ${esc(r.ticket||"")}">已提交</span>`
+        : `<button class="link-btn" data-submit="${r.ts}">提交</button>`)+
+      `　<button class="del-btn" data-ts="${r.ts}">删除</button></td>`+
+      `</tr>`;
+  });
+  h += '</table>';
+  box.innerHTML = h;
+}
+$("recordsBox").addEventListener("click", e=>{
+  const del = e.target.closest(".del-btn");
+  if(del){
+    const ts = parseInt(del.getAttribute("data-ts"), 10);
+    if(confirm("确定删除该条记录吗？此操作不可恢复。")){
+      records = records.filter(r => r.ts !== ts);
+      persist();
+      renderAll();
+      toast("已删除该条记录");
+    }
+    return;
+  }
+  const sub = e.target.closest("[data-submit]");
+  if(sub){
+    const ts2 = parseInt(sub.getAttribute("data-submit"), 10);
+    const rec2 = records.find(r => r.ts === ts2);
+    if(rec2){
+      lastResult = rec2;
+      $("result").style.display = "block";
+      submitToCloud(rec2);
+    }
+    return;
+  }
+  const view = e.target.closest("[data-view]");
+  if(view){
+    const ts = parseInt(view.getAttribute("data-view"), 10);
+    const rec = records.find(r => r.ts === ts);
+    if(rec) showRecordModal(rec);
+  }
+});
+function showRecordModal(rec){
+  $("modalTitle").textContent = `${stageLabel(rec)} · ${fmtDateTime(rec.date)} · ${rec.name||""}`;
+  const tagCls = t => t==="是" ? "tag-yes" : (t==="倾向是"||t==="基本是") ? "tag-tend" : "tag-no";
+  let h = `<div class="info-line">姓名：${esc(rec.name||"—")}　性别：${esc(rec.gender||"—")}　年龄：${rec.age||"—"}岁　城市：${esc(rec.city||"—")}<br>`+
+          `联系电话：${rec.phone?esc(rec.phone.slice(0,3))+"****"+esc(rec.phone.slice(-4)):"—"}　推荐渠道：${esc(rec.channel||"—")}<br>`+
+          `评估阶段：${esc(stageLabel(rec))}　评估时间：<b>${fmtDateTime(rec.date)}</b>　提交时间：${new Date(rec.ts).toLocaleString('zh-CN')}</div>`;
+  h += '<table class="res-table"><tr><th>体质类型</th><th>原始分</th><th>转化分</th><th>判定</th><th style="width:24%">程度</th></tr>';
+  rec.results.forEach((r,i)=>{
+    h += `<tr><td>${esc(r.name)}${r.normal?'（平和）':''}</td><td>${r.raw}</td><td>${r.score}</td>`+
+      `<td><span class="${tagCls(rec.tags[i])}">${rec.tags[i]}</span></td>`+
+      `<td><div class="bar"><i style="width:${r.score}%"></i></div></td></tr>`;
+  });
+  h += '</table>';
+  if(rec.items){
+    h += '<details class="detail" style="margin-top:14px;"><summary>各题目得分明细</summary><div>';
+    h += '<table class="item-table"><tr><th>题目</th><th class="num">选项</th><th class="num">分值</th><th class="num">计分</th></tr>';
+    rec.items.forEach(grp=>{
+      h += `<tr class="grp"><td colspan="4">${esc(grp.name)}</td></tr>`;
+      grp.items.forEach(it=>{
+        if(!it.used){
+          h += `<tr><td style="color:var(--muted)">${it.idx}. ${esc(it.q)} <span class="rev-tag">（${esc(it.note||"")}·未作答）</span></td>`+
+               `<td class="num" style="color:var(--muted)">—</td><td class="num" style="color:var(--muted)">—</td><td class="num" style="color:var(--muted)">—</td></tr>`;
+          return;
+        }
+        const opt = LIKERT[it.val-1] || "";
+        h += `<tr><td>${it.idx}. ${esc(it.q)}${it.rev?' <span class="rev-tag">逆向</span>':''}</td>`+
+             `<td class="num">${esc(opt)}（${it.val}）</td><td class="num">${it.val}</td><td class="num"><b>${it.rawv}</b></td></tr>`;
+      });
+    });
+    h += '</table></div></details>';
+  }
+  $("modalBody").innerHTML = h;
+  $("modalBg").classList.add("show");
+}
+$("modalBg").addEventListener("click", e=>{
+  if(e.target === $("modalBg")) $("modalBg").classList.remove("show");
+});
+
+/* ============================================================
+   导出
+   ============================================================ */
+$("exportBtn").addEventListener("click", ()=>{
+  if(!currentPhone){ toast("请先加载记录（输入手机号 → 点「加载我的记录」）"); return; }
+  const mine = myRecords();
+  if(!mine.length){ toast("当前电话暂无记录可导出"); return; }
+  const lines = [`中医体质测评记录（${currentPhone.slice(-4)} 尾号） 导出于 ${fmtDate(todayISO())}`, ""];
+  lines.push("说明：以下为个人自评记录，仅供健康管理参考，不构成疾病诊断、治疗依据或产品功效评价。");
+  lines.push("");
+  sortRecords(mine).forEach((r, i)=>{
+    lines.push(`[${i+1}] ${stageLabel(r)}（评估时间：${fmtDateTime(r.date)}）　姓名：${r.name||"—"}　性别：${r.gender||"—"}　年龄：${r.age||"—"}岁`);
+    lines.push(`    城市：${r.city||"—"}　推荐渠道：${r.channel||"—"}`);
+    r.results.forEach((x, di)=>{
+      lines.push(`    ${x.name}：原始分 ${x.raw} ／ 转化分 ${x.score} ／ 判定 ${r.tags[di]}`);
+    });
+    lines.push(`    原始分合计 ${r.totalRaw} ／ 转化分均分 ${r.avg.toFixed(1)}`);
+    lines.push("");
+  });
+  const area = $("exportArea");
+  area.style.display = "block";
+  area.value = lines.join("\n");
+  area.select();
+  try{ document.execCommand("copy"); toast("已生成并复制到剪贴板"); }
+  catch(e){ toast("已生成，请手动复制"); }
+});
+$("csvBtn").addEventListener("click", ()=>{
+  if(!currentPhone){ toast("请先加载记录（输入手机号 → 点「加载我的记录」）"); return; }
+  const mine = myRecords();
+  if(!mine.length){ toast("当前电话暂无记录可导出"); return; }
+  const sorted = sortRecords(mine);
+  const names = DATA.map(c=>c.name);
+  const head = ["阶段","试食周期","评估时间","姓名","性别","年龄","电话尾号","城市","推荐渠道"].concat(names.map(n=>n+"(原始分)")).concat(names.map(n=>n+"(转化分)"))
+    .concat(["原始分合计","转化分均分","平和质判定"]);
+  const rows = [head.join(",")];
+  sorted.forEach(r=>{
+    const raws = names.map(n=>{ const x = r.results.find(y=>y.name===n); return x ? x.raw : ""; });
+    const scores = names.map(n=>{ const x = r.results.find(y=>y.name===n); return x ? x.score : ""; });
+    const cyc = (r.stage === "试食后" && r.cycle) ? (r.cycle + (r.cycleUnit||"周")) : "";
+    const cells = [stageLabel(r), cyc, String(r.date).replace("T"," "), r.name||"", r.gender||"", r.age||"", r.phone?r.phone.slice(-4):"", r.city||"", r.channel||""]
+      .concat(raws).concat(scores).concat([r.totalRaw, r.avg.toFixed(1), r.normalTag]);
+    rows.push(cells.map(c=>{
+      const s = String(c == null ? "" : c);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+    }).join(","));
+  });
+  const blob = new Blob(["\ufeff" + rows.join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `中医体质测评记录_${currentPhone.slice(-4)}_${todayISO()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+  toast("CSV 已下载");
+});
+$("clearBtn").addEventListener("click", ()=>{
+  if(!records.length){ toast("当前无数据"); return; }
+  if(confirm("确定清空全部评估记录吗？此操作不可恢复。")){
+    records = [];
+    persist();
+    currentPhone = "";
+    renderAll();
+    toast("已清空全部数据");
+  }
+});
+
+/* ============================================================
+   重置
+   ============================================================ */
+function resetAll(){
+  ['fName','fBirth','fPhone','fCity','fChannel'].forEach(id => $(id).value = "");
+  document.querySelectorAll('input[name=gender]').forEach(r => r.checked = false);
+  $("fCityManual").value = "";
+  document.querySelectorAll('#questions input[type=radio]').forEach(r => r.checked = false);
+  $("result").style.display = "none";
+  const st = $("locStatus");
+  st.textContent = "点击按钮获取您当前所在城市";
+  st.style.color = "var(--muted)";
+  $("locFallback").style.display = "none";
+  clearAllFieldErrors();
+  document.querySelectorAll('#questions .q.miss-q').forEach(e => e.classList.remove('miss-q'));
+  curStage = "试食前";
+  currentPhone = "";
+  $("loadStatus").textContent = "输入手机号后可加载该号码的历史记录";
+  $("loadStatus").style.color = "var(--muted)";
+  renderStages();
+  applyGender();
+  syncNetworkTime(false);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============================================================
+   定位
+   ============================================================ */
+function getLocation(){
+  const btn = $("locBtn"), st = $("locStatus"), fb = $("locFallback");
+  if(!navigator.geolocation){
+    st.textContent = "浏览器不支持定位，请手动选择城市";
+    st.style.color = "var(--accent)";
+    fb.style.display = "block";
+    validateCity(false);
+    return;
+  }
+  btn.disabled = true;
+  st.textContent = "正在定位…";
+  st.style.color = "var(--muted)";
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    try{
+      const {latitude, longitude} = pos.coords;
+      const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=zh`);
+      const j = await res.json();
+      const city = (j.city || j.locality || "").trim();
+      if(!city) throw new Error("no city");
+      $("fCity").value = city;
+      st.textContent = "已定位：" + city;
+      st.style.color = "var(--primary-dark)";
+      clearFieldError($("fCityManual"), "fCityErr");
+    }catch(e){
+      st.textContent = "定位成功但无法解析城市，请手动选择";
+      st.style.color = "var(--accent)";
+      fb.style.display = "block";
+    }
+    btn.disabled = false;
+  }, err=>{
+    st.textContent = "定位失败（" + err.message + "），请手动选择城市";
+    st.style.color = "var(--accent)";
+    fb.style.display = "block";
+    btn.disabled = false;
+  }, {timeout:10000});
+}
+
+/* ============================================================
+   总渲染 + 初始化
+   ============================================================ */
+function renderAll(){
+  renderStages();
+  buildChartTabs();
+  renderChart();
+  renderRecords();
+}
+
+load();
+render();
+renderAll();
+$("fAssessTime").value = nowLocalInput();
+syncNetworkTime(false);
+</script>
+</body>
+</html>
